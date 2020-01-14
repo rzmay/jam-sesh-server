@@ -7,6 +7,8 @@ let Player = class {
 		this.name = name;
 		this.color = color;
 
+		this.facing = 1;
+
 		this.position = new Vector3();
 		this.rotation = new Quaternion();
 		this.scale = new Vector3();
@@ -17,6 +19,8 @@ let Player = class {
 			this.position = Vector3.fromObject(data.position);
 			this.rotation = Quaternion.fromObject(data.rotation);
 			this.scale = Vector3.fromObject(data.scale);
+
+			this.facing = data.facing;
 		});
 
 		this.socket.on('event', (data)=>{
@@ -38,7 +42,8 @@ let Player = class {
 			color: this.color,
 			position: this.position,
 			rotation: this.rotation,
-			scale: this.scale
+			scale: this.scale,
+			facing: this.facing
 		}
 	}
 
