@@ -16,15 +16,19 @@ let Player = class {
 		this.send = (event, data)=>{ console.log(`Send {${event}, ${data}: Not yet implemented`)};
 
 		this.socket.on('update', (data)=>{
-			this.position = Vector3.fromObject(data.position);
-			this.rotation = Quaternion.fromObject(data.rotation);
-			this.scale = Vector3.fromObject(data.scale);
+			let dataJSON = JSON.parse(data);
 
-			this.facing = data.facing;
+			this.position = Vector3.fromObject(dataJSON.position);
+			this.rotation = Quaternion.fromObject(dataJSON.rotation);
+			this.scale = Vector3.fromObject(dataJSON.scale);
+
+			this.facing = dataJSON.facing;
 		});
 
 		this.socket.on('event', (data)=>{
-			this.send(data.event, data.data);
+			let dataJSON = JSON.parse(data);
+
+			this.send(dataJSON.eventName, dataJSON.eventData);
 		});
 	}
 
@@ -34,16 +38,16 @@ let Player = class {
 
 	get data() {
 		return {
-			socket: {
-				id: this.socket.id,
-				ping: this.socket.ping,
-			},
 			name: this.name,
 			color: this.color,
 			position: this.position,
 			rotation: this.rotation,
 			scale: this.scale,
-			facing: this.facing
+			facing: this.facing,
+
+			// Socket info for Unity
+			socketId: this.socket.id,
+			socketPing: this.socket.ping
 		}
 	}
 

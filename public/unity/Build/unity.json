@@ -1,0 +1,17 @@
+{
+"companyName": "robertmay",
+"productName": "jam sesh",
+"productVersion": "0.1",
+"dataUrl": "unity.data.unityweb",
+"wasmCodeUrl": "unity.wasm.code.unityweb",
+"wasmFrameworkUrl": "unity.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"backgroundUrl": "unity.jpg",
+"splashScreenStyle": "Light",
+"backgroundColor": "#FFFFFF",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": true,
+"multithreading": false,
+"unityVersion": "2019.2.19f1"
+}

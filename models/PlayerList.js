@@ -1,8 +1,8 @@
-const Player = require ('./Player');
-
 let PlayerList = class PlayerList {
-	constructor() {
+	constructor(eventHandler) {
 		this.players = [];
+
+		this.eventHandler = eventHandler;
 	}
 
 	join(player) {
@@ -10,15 +10,21 @@ let PlayerList = class PlayerList {
 
 		this.emitAll('join', player.data);
 
-		let self = this;
 		player.send = (event, data) => {
-			self.emitAll('event', {event: event, data: data});
+			this.emitAll('event', {eventName: event, eventData: data});
 		};
 
-		player.socket.on('disconnect', ()=>{
-			self.players.splice(self.players.findIndex(a => a.socket.id === player.socket.id));
+		player.socket.on('serverEvent', (data) => {
+			let dataJSON = JSON.parse(data);
 
-			self.emitAll('leave', player.data);
+			this.eventHandler[dataJSON.eventName](JSON.parse(dataJSON.eventData));
+		});
+
+		player.socket.on('disconnect', ()=>{
+			this.players.splice(this.players.findIndex(a => a.socket.id === player.socket.id), 1);
+			console.log(`Player ${player.name} disconnected`);
+
+			this.emitAll('leave', player.data);
 		});
 	}
 
@@ -32,12 +38,12 @@ let PlayerList = class PlayerList {
 		}
 
 		// Send data
-		let playerDict = { players: {} };
+		let playerList = { players: [] };
 		for (let data of this.players.map(player => player.data))
 		{
-			playerDict.players[data.socket.id] = data;
+			playerList.players.push({ id: data.socketId, playerData: data });
 		}
-		this.emitAll('update', playerDict);
+		this.emitAll('update', playerList);
 	}
 
 	emitAll(event, data) {

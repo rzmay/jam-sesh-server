@@ -1,3 +1,16 @@
 {
-  "fps": 30
+  "fps": 30,
+
+  "room": {
+    "playerLimit": 10,
+    "idLength": 10
+  },
+
+  "instrumentPath": "./resources/audio/",
+
+  "audio": {
+    "bitRate": 705600,
+    "sampleRate": 44100,
+    "mono": false
+  }
 }

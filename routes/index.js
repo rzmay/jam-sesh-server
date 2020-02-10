@@ -1,12 +1,17 @@
 const express = require('express');
 
 const config = require('../config');
-const Player = require('../models/Player');
-const PlayerList = require('../models/PlayerList');
+const RoomManager = require('../models/RoomManager');
+const InstrumentHelper = require('../models/InstrumentHelper');
+
 
 var io = require('socket.io')({
   transports: ['websocket'],
 });
+
+var roomManager = new RoomManager(io);
+let gameLoopInterval = roomManager.startGameLoop(config.fps);
+
 var router = express.Router();
 
 /* GET home page. */
@@ -14,28 +19,28 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'jam sesh' });
 });
 
-let playerList;
-io.on('connection', (socket)=>{
-  // console.log(`Connection from ${socket.id}`);
-
-  let player;
-  socket.on('join', (data) => {
-    // console.log(`Player ${data.name} joined`);
-    player = new Player(socket, data.name, data.color);
-
-    if (playerList == null) { playerList = new PlayerList(); }
-    playerList.join(player);
-  });
+/* GET game page */
+router.get('/play', function(req, res, next) {
+  res.render('play', { title: 'jam sesh' })
 });
 
-function gameLoop() {
-  if (!playerList) { return; }
-  if (playerList.players.length === 0) { playerList = null; return; }
+/* GET instrument */
+router.get('/instrument', function(req, res, next) {
+  const index = req.query.i;
+  InstrumentHelper.SendInstrument(index, res);
+});
 
-  playerList.update();
-}
+router.get('/streams/:room', function (req, res) {
+  res.set({
+    'Content-Type': 'audio/wav',
+    'Transfer-Encoding': 'chunked'
+  });
 
-let gameLoopInterval = setInterval(gameLoop, 1/config.fps);
+  let room = roomManager.getRoomById(req.params.room);
+  if (room !== null) {
+    room.stream.pipe(res);
+  }
+});
 
 router.io = io;
 
