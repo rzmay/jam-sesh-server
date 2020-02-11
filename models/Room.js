@@ -1,11 +1,15 @@
 const crypto = require('crypto');
 const stream = require('stream');
+const Filter = require('bad-words');
 
 const Player = require('../models/Player');
 const PlayerList = require('../models/PlayerList');
 const InstrumentHelper = require('../models/InstrumentHelper');
 
 const config = require('../config');
+
+const filter = new Filter({ placeHolder: ':)' });
+filter.removeWords('hell', 'hells');
 
 let Room = class {
 
@@ -22,6 +26,7 @@ let Room = class {
     }
 
     get stream() { return this.streamInput; }
+    get players() { return this.playerList.players.map(e => e.data); }
 
     get isFull() { return this.playerList.players.length >= config.room.playerLimit; }
     get isEmpty() { return this.playerList.players.length === 0; }
@@ -64,6 +69,9 @@ let Room = class {
     join(data, socket)
     {
         let dataJSON = JSON.parse(data);
+
+        // Filter name
+        dataJSON.name = filter.clean(dataJSON.name);
 
         console.log(`Player ${dataJSON.name} joined room ${this.id} (data: ${data})`);
         let player = new Player(socket, dataJSON.name, dataJSON.color);

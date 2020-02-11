@@ -14,7 +14,7 @@ let gameLoopInterval = roomManager.startGameLoop(config.fps);
 
 var router = express.Router();
 
-/* GET home page. */
+/* GET home page */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'jam sesh' });
 });
@@ -24,12 +24,18 @@ router.get('/play', function(req, res, next) {
   res.render('play', { title: 'jam sesh' })
 });
 
+/* GET players */
+router.get('/data/players', function(req, res, next) {
+  res.send(roomManager.players);
+});
+
 /* GET instrument */
 router.get('/instrument', function(req, res, next) {
   const index = req.query.i;
   InstrumentHelper.SendInstrument(index, res);
 });
 
+/* GET stream */
 router.get('/streams/:room', function (req, res) {
   res.set({
     'Content-Type': 'audio/wav',

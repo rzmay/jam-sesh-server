@@ -32,6 +32,8 @@ let RoomManager = class {
         });
     }
 
+    get players() { return this.rooms.map(e => e.players).flat(); }
+
     update() {
         let i = 0;
         while (i < this.rooms.length) {

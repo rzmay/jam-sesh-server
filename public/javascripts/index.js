@@ -1,30 +1,38 @@
-// Create & set up socket
-const socket = io();
+function startLiveText() {
 
-socket.on('joinedRoom', (data)=>{
-    let room = data.id;
+    function getPlayers(callback) {
+        const url = `${window.location.protocol}//${window.location.host}/data/players`;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'json';
+        xhr.onload = function () {
+            var status = xhr.status;
+            callback({status: status === 200 ? null : status, data: xhr.response})
+        };
+        xhr.send();
+    }
 
-    console.log(`Joined room ${room}`);
+    function displayPlayersInfo(element) {
+        getPlayers((response)=>{
+            if (response.status !== null) {
+                console.log(`Error fetching players (${response.status}): ${response.data}`);
+                return;
+            }
 
-    socket.on('audioData', async (base64string)=>{
-        // Generate sound settings
-        let soundId = Math.random().toString(36).substr(2, 5);
+            let playerCount = response.data.length;
+            element.innerText = `Create tunes with ${playerCount} other player${playerCount > 1 ? 's' : ''}.`;
+        });
+    }
 
-        let sound = document.createElement('audio');
-        sound.id = 'audioPlayer-' + soundId;
-        sound.src = 'data:audio/wav;base64,' + base64string;
-        sound.type = 'audio/wav';
-        document.body.appendChild(sound);
+    let text = document.getElementById('gameDescription');
 
-        // Add sound to document and play
-        let soundInstance = document.getElementById(sound.id);
-        soundInstance.play();
+    displayPlayersInfo(text);
+    let updateInterval = setInterval(()=>{ displayPlayersInfo(text); }, 10 * 1000);
+    return updateInterval;
+}
 
-        // Destroy sound after 2s
-        setTimeout(()=>{ soundInstance.outerHTML = ""; }, 2000);
-    });
+window.requestAnimationFrame(()=>{
+
+    startLiveText();
+
 });
-
-
-// Set up unity
-setUpUnity(socket);
