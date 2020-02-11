@@ -20,7 +20,7 @@ function startLiveText() {
             }
 
             let playerCount = response.data.length;
-            element.innerText = `Create tunes with ${playerCount} other player${playerCount > 1 ? 's' : ''}.`;
+            element.innerText = playerCount === 0 ? 'Multiplayer Music Composition Experience' : `Create Tunes with ${playerCount} Other Player${playerCount > 1 ? 's' : ''}.`;
         });
     }
 

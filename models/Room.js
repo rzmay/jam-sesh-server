@@ -47,7 +47,7 @@ let Room = class {
 
             _transform(chunk, encoding, done) {
                 this.push(chunk);
-                console.log(`${this.name} writes ${chunk.length}`);
+                // console.log(`${this.name} writes ${chunk.length}`);
                 done();
             }
         }
@@ -73,7 +73,7 @@ let Room = class {
         // Filter name
         dataJSON.name = filter.clean(dataJSON.name);
 
-        console.log(`Player ${dataJSON.name} joined room ${this.id} (data: ${data})`);
+        // console.log(`Player ${dataJSON.name} joined room ${this.id} (data: ${data})`);
         let player = new Player(socket, dataJSON.name, dataJSON.color);
 
         // Send room ID to player

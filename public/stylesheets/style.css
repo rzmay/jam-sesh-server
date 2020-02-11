@@ -1,10 +1,34 @@
+@font-face {
+  font-family: "OldGameFatty";
+  src: url("../fonts/OldGameFatty.ttf");
+}
+
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.index-body {
+  background: linear-gradient(0, magenta, lightskyblue);
+
+  font-family: "OldGameFatty", sans-serif;
+  font-size: 14px;
+}
+
+.index-footer {
+  position: fixed;
+  bottom: 5px;
+}
+
+#title {
+  width: 40%;
+}
+
+#player-sprite {
+  width: 5%;
+}
+
+#play-button {
+  font-size: 1.75em;
 }
 
 .webgl-content * {

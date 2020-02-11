@@ -15,7 +15,6 @@ InstrumentHelper._readInstruments = async function() {
 };
 
 InstrumentHelper._getInstrument = async function (index) {
-    console.log(`getInstrument: ${index}`);
     if (this._instruments.length === 0) { await this._readInstruments(); }
     if (index >= this._instruments.length) index = 0;
 
@@ -24,7 +23,6 @@ InstrumentHelper._getInstrument = async function (index) {
 
 InstrumentHelper.sendInstrument = async function(index, res) {
     const instrument = await this._getInstrument(index);
-    console.log(`sendInstrument: ${instrument}`);
 
     res.sendFile(path.join(__dirname, '..', config.instrumentPath, instrument));
 };

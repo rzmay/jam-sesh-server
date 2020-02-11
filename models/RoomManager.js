@@ -12,7 +12,7 @@ let RoomManager = class {
                 let joined = false;
                 for (let i = 0; i < this.rooms.length && !joined; i++) {
                     let room = this.rooms[i];
-                    console.log(`Checking room ${room.id}: ${room.isFull ? 'full' : 'not full'} (${room.playerList.players.length})`);
+                    // console.log(`Checking room ${room.id}: ${room.isFull ? 'full' : 'not full'} (${room.playerList.players.length})`);
 
                     // If room is not full, add player
                     if (!room.isFull) {
@@ -40,7 +40,7 @@ let RoomManager = class {
             // If room is empty, remove it;
             // Otherwise, update it and move on
             if (this.rooms[i].isEmpty) {
-                console.log(`Deleting empty room ${this.rooms[i].id}`);
+                // console.log(`Deleting empty room ${this.rooms[i].id}`);
                 this.rooms.splice(i, 1);
             } else {
                 this.rooms[i].update();

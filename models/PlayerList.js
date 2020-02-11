@@ -22,7 +22,7 @@ let PlayerList = class PlayerList {
 
 		player.socket.on('disconnect', ()=>{
 			this.players.splice(this.players.findIndex(a => a.socket.id === player.socket.id), 1);
-			console.log(`Player ${player.name} disconnected`);
+			// console.log(`Player ${player.name} disconnected`);
 
 			this.emitAll('leave', player.data);
 		});
