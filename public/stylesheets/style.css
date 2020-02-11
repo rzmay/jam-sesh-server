@@ -3,8 +3,13 @@
   src: url("../fonts/OldGameFatty.ttf");
 }
 
+html {
+  overflow: hidden;
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  overflow: auto;
 }
 
 .index-body {

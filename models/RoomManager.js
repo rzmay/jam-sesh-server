@@ -40,7 +40,7 @@ let RoomManager = class {
             // If room is empty, remove it;
             // Otherwise, update it and move on
             if (this.rooms[i].isEmpty) {
-                // console.log(`Deleting empty room ${this.rooms[i].id}`);
+                console.log(`Deleting empty room ${this.rooms[i].id}`);
                 this.rooms.splice(i, 1);
             } else {
                 this.rooms[i].update();
