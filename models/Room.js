@@ -81,7 +81,7 @@ let Room = class {
 
         // Set up audio stream
         this.stream.sendToClient = (data)=>{
-           socket.emit('audioData', data.toString('base64'));
+           this.playerList.emitAll('audioData', data.toString('base64'));
         };
 
         this.playerList.join(player);
