@@ -11,6 +11,17 @@ const config = require('../config');
 const filter = new Filter({ placeHolder: ':)' });
 filter.removeWords('hell', 'hells');
 
+const defaultNames = [
+    "bob dylan",
+    "bob marley",
+    "john lennon",
+    "paul mccartney",
+    "ringo starr",
+    "george harrison",
+    "jane remover",
+    "douglas dulgarian"
+];
+
 let Room = class {
 
     constructor() {
@@ -71,7 +82,7 @@ let Room = class {
         let dataJSON = JSON.parse(data);
 
         // Filter name
-        dataJSON.name = filter.clean(dataJSON.name);
+        dataJSON.name = filter.clean(dataJSON.name || defaultNames[Math.floor(Math.random() * defaultNames.length)]);
 
         console.log(`Player ${dataJSON.name} joined room ${this.id} (data: ${data})`);
         let player = new Player(socket, dataJSON.name, dataJSON.color);
